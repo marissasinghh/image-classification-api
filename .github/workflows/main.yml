@@ -24,12 +24,20 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      
+
       - name: Black Check
         uses: RojerGS/python-black-check@master
         with:
           line-length: '88'
-        
-      # Run all the containers specified in docker-compose.yml file
+
+      - name: Create Docker network
+        run: docker network create shared_network || true
+
+      - name: Prepare environment
+        run: |
+          cp .env.original .env 2>/dev/null || true
+          cp api/.env.original api/.env 2>/dev/null || true
+
+      # Run all the containers specified in docker-compose.yml file (Docker Compose V2)
       - name: Test containers build
         run: docker compose up -d --build
