@@ -7,7 +7,7 @@ import redis
 from .. import settings
 
 # Connect to Redis
-db = db = redis.Redis(
+db = redis.Redis(
     host=settings.REDIS_IP, port=settings.REDIS_PORT, db=settings.REDIS_DB_ID
 )
 

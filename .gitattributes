@@ -1,0 +1,2 @@
+# Force LF line endings for Python so CI (Linux) matches local Black
+*.py text eol=lf
