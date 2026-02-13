@@ -32,4 +32,4 @@ jobs:
         
       # Run all the containers specified in docker-compose.yml file
       - name: Test containers build
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
