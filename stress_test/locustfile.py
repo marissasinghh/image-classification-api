@@ -37,7 +37,7 @@ def login(username: str, password: str) -> Optional[str]:
 
 
 class APIUser(HttpUser):
-    host = "http://localhost:8000"  
+    host = "http://localhost:8000"
     wait_time = between(1, 5)
 
     @task(1)

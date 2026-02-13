@@ -6,12 +6,11 @@ import redis
 
 from .. import settings
 
-# Connect to Redis 
+# Connect to Redis
 db = db = redis.Redis(
-    host=settings.REDIS_IP,
-    port=settings.REDIS_PORT,
-    db=settings.REDIS_DB_ID
+    host=settings.REDIS_IP, port=settings.REDIS_PORT, db=settings.REDIS_DB_ID
 )
+
 
 async def model_predict(image_name):
     print(f"Processing image {image_name}...")
@@ -33,14 +32,14 @@ async def model_predict(image_name):
     prediction = None
     score = None
 
-    # Assign an unique ID 
+    # Assign an unique ID
     job_id = str(uuid4())
 
-    # Create a dict with the job data we will send through Redis 
+    # Create a dict with the job data we will send through Redis
     job_data = {
-        "id": job_id, 
+        "id": job_id,
         "image_name": image_name,
-        }
+    }
 
     # Send the job to the model service using Redis
     db.lpush(settings.REDIS_QUEUE, json.dumps(job_data))

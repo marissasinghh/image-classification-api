@@ -19,10 +19,10 @@ def allowed_file(filename):
         True if the file is an image, False otherwise.
     """
     ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
-    
-    # Get the file extension 
+
+    # Get the file extension
     _, ext = os.path.splitext(filename)
-    
+
     return ext.lower() in ALLOWED_EXTENSIONS
 
 
@@ -42,7 +42,7 @@ async def get_file_hash(file):
     str
         New filename based in md5 file hash.
     """
-    # Read file content and generate md5 hash 
+    # Read file content and generate md5 hash
     file_content = await file.read()
     file_hash = hashlib.md5(file_content).hexdigest()
 

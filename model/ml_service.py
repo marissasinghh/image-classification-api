@@ -9,14 +9,12 @@ from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.applications.resnet50 import decode_predictions, preprocess_input
 from tensorflow.keras.preprocessing import image
 
-# Connect to Redis 
+# Connect to Redis
 db = redis.Redis(
-    host=settings.REDIS_IP,
-    port=settings.REDIS_PORT,
-    db=settings.REDIS_DB_ID
+    host=settings.REDIS_IP, port=settings.REDIS_PORT, db=settings.REDIS_DB_ID
 )
 
-# Load ML model 
+# Load ML model
 model = ResNet50(include_top=True, weights="imagenet")
 model.summary()
 
@@ -48,20 +46,20 @@ def predict(image_name):
         print(f"Error loading image: {e}")
         return None, None
 
-    # -- Apply preprocessing -- 
-    
-    # Convert to numpy array 
+    # -- Apply preprocessing --
+
+    # Convert to numpy array
     x = image.img_to_array(img)
 
     # Add an extra dimension to the array (model expects a batch of images)
     x_batch = np.expand_dims(x, axis=0)
-    
+
     # Scale pixels values
     x_batch = preprocess_input(x_batch)
 
     # Get predictions
     preds = model.predict(x_batch, batch_size=256)
-    
+
     # Decode TOP 1 prediction
     _, class_name, pred_probability = decode_predictions(preds, top=1)[0][0]
 
@@ -101,7 +99,7 @@ def classify_process():
         # Prepare a new JSON with the results
         output = {"prediction": class_name, "score": pred_probability}
 
-        # Store the job results on Redis 
+        # Store the job results on Redis
         db.set(job_id, json.dumps(output))
 
         # Sleep for a bit

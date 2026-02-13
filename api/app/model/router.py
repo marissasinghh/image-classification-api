@@ -15,12 +15,17 @@ router = APIRouter(tags=["Model"], prefix="/model")
 
 @router.post("/predict")
 async def predict(file: UploadFile, current_user=Depends(get_current_user)):
-    rpse = {"success": False, "prediction": None, "score": None, "image_file_name": None}
+    rpse = {
+        "success": False,
+        "prediction": None,
+        "score": None,
+        "image_file_name": None,
+    }
 
     # Check if file was sent
     if not file or not file.filename:
         raise HTTPException(status_code=400, detail="No file provided")
-    
+
     # Check if file is allowed
     if not utils.allowed_file(file.filename):
         raise HTTPException(status_code=400, detail="File type is not supported.")
@@ -38,7 +43,7 @@ async def predict(file: UploadFile, current_user=Depends(get_current_user)):
     prediction, score = await model_predict(image_name)
 
     rpse["success"] = True
-    rpse["prediction"] = prediction 
+    rpse["prediction"] = prediction
     rpse["score"] = score
     rpse["image_file_name"] = image_name
 

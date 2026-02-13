@@ -20,11 +20,21 @@ def login(username: str, password: str) -> Optional[str]:
     # Make a POST request to the login endpoint
     response = requests.post(
         f"{API_BASE_URL}/login",
-        headers={"accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"},
-        data={"grant_type": "", "username": username, "password": password, "scope": "", "client_id": "", "client_secret": ""}
+        headers={
+            "accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data={
+            "grant_type": "",
+            "username": username,
+            "password": password,
+            "scope": "",
+            "client_id": "",
+            "client_secret": "",
+        },
     )
 
-    # Check if the response status code is 200 then extract token 
+    # Check if the response status code is 200 then extract token
     if response.status_code == 200:
         return response.json()["access_token"]
     else:
@@ -49,9 +59,7 @@ def predict(token: str, uploaded_file: Image) -> requests.Response:
 
     # Make a POST request to the predict endpoint
     response = requests.post(
-        f"{API_BASE_URL}/model/predict",
-        files=file_data,
-        headers=headers
+        f"{API_BASE_URL}/model/predict", files=file_data, headers=headers
     )
 
     return response
@@ -73,7 +81,7 @@ def send_feedback(
     Returns:
         requests.Response: _description_
     """
-    # Create a dictionary with the feedback data 
+    # Create a dictionary with the feedback data
     feedback_data = {
         "feedback": feedback,
         "score": score,
@@ -86,9 +94,7 @@ def send_feedback(
 
     # Make a POST request to the feedback endpoint
     response = requests.post(
-        f"{API_BASE_URL}/feedback",
-        json=feedback_data,
-        headers=headers
+        f"{API_BASE_URL}/feedback", json=feedback_data, headers=headers
     )
 
     return response
