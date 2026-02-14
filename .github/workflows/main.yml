@@ -30,6 +30,12 @@ jobs:
         with:
           line-length: '88'
 
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
       - name: Create Docker network
         run: docker network create shared_network || true
 
@@ -38,6 +44,5 @@ jobs:
           cp .env.original .env 2>/dev/null || true
           cp api/.env.original api/.env 2>/dev/null || true
 
-      # Run all the containers specified in docker-compose.yml file (Docker Compose V2)
       - name: Test containers build
-        run: docker compose up -d --build
+        run: docker-compose up -d --build
