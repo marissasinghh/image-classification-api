@@ -33,10 +33,10 @@ jobs:
 
       - name: Set up Docker and build containers
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose-plugin
-          docker compose version
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
           docker network create shared_network || true
           cp .env.original .env 2>/dev/null || true
           cp api/.env.original api/.env 2>/dev/null || true
-          docker compose up -d --build
+          docker-compose up -d --build
