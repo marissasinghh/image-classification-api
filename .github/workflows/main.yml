@@ -30,19 +30,12 @@ jobs:
         with:
           line-length: '88'
 
-      - name: Install Docker Compose
+      - name: Set up Docker and build containers
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose-plugin
           docker compose version
-
-      - name: Create Docker network
-        run: docker network create shared_network || true
-
-      - name: Prepare environment
-        run: |
+          docker network create shared_network || true
           cp .env.original .env 2>/dev/null || true
           cp api/.env.original api/.env 2>/dev/null || true
-
-      - name: Test containers build
-        run: docker compose up -d --build
+          docker compose up -d --build
